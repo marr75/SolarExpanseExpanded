@@ -1,0 +1,157 @@
+# Research Tree Expansion — node unlock patches (task 021, plan.md §1-3)
+# ─────────────────────────────────────────────────────────────────────────────
+# Every block patches an EXISTING base-game research node. replaceUnlocks is omitted
+# (defaults false) so all entries below APPEND to each node's existing unlocks.
+# Verified: all node ids and every referenced facility/resource id exist in the
+# Teddit dump with the exact case/spelling used here.
+#
+# OPERATOR CORRECTION applied to node 1: the four small surface gas extractors
+# (build_co2mine/nitrogenmine/noblegasmine/oxygenmine) are ALWAYS buildable from start
+# (isLocked:false, no gating node), so no UnlockFacility is added for them. Only the
+# MiningEfficiency rate boost and the added mined gases (below) are gated. noblegasmine_big
+# is dropped. research_mine_1 therefore needs no patch and is intentionally omitted.
+#
+# §1.5 reworked to drop the efficient-reactor-variant approach: fuel-burning power
+# facilities are now marked energyThrottleable (load-following) via facilities.yaml
+# instead. research_nukepower_2 no longer carries an UnlockFacility patch here.
+
+# ── 1.1 Ground gas extraction: rate boost (gas mining unlock deferred) ──
+# VACUUM-OPTIMIZED BOREHEADS (research_mine_3)
+# noblegasmine_big and the module_basemining_gas variant are DROPPED.
+#
+# Gating the four surface gases onto module_basemining via AdditionalMinedResources is
+# NOT authorable in Teddit YAML today: the game reads the added resource from
+# UnlockData.parameter3AdditionalMinedResourcesID (a string[]), and Teddit's
+# CreateUnlockDataFromPatch does not map any YAML key onto that field
+# (ScriptableObjectPatcher.cs:1244-1276). See docs/tasks/021-research-tree-expansion/
+# gas-mining-teddit-pr.md for the proposed Teddit parser fix and the data to add once
+# it lands.
+research_mine_4:
+  unlocks:
+    - action: UnlockBonus
+      id: gas_mining
+      bonus: MiningEfficiency
+      bonusParameter: 50
+      targets:
+        - build_co2mine
+        - build_nitrogenmine
+        - build_noblegasmine
+        - build_oxygenmine
+
+# ── 1.2 Facility construction cost (glass/heavy industry) ──
+# ADVANCED METALLURGY 4 (research_mat_metal4)
+research_mat_metal4:
+  unlocks:
+    - action: UnlockFacility
+      id: build_glass_big
+    - action: UnlockBonus
+      id: heavy_industry_cost
+      bonus: BuildCost
+      bonusParameter: 20
+      targets:
+        - build_glass
+        - build_glass_big
+        - build_polymerproduction
+        - build_alloysmelting
+        - build_exoticalloy
+        - build_electronicsfactory
+
+# ── 1.3 Gas electrolysis (CO2 and H2O) ──
+# ADVANCED LIFE SUPPORT 6 (research_lifesup_6)
+research_lifesup_6:
+  unlocks:
+    - action: UnlockFacility
+      id: build_electrolysis
+    - action: UnlockFacility
+      id: build_electrolysis_big
+    - action: UnlockBonus
+      id: electrolysis_yield
+      bonus: ProductionEfficiency
+      bonusParameter: 40
+      targets:
+        - build_co2_splitting
+        - build_electrolysis
+        - build_electrolysis_big
+
+# ── 1.4 Large crew module mass ──
+# ADVANCED LIFE SUPPORT 16 (research_lifesup_16)
+research_lifesup_16:
+  unlocks:
+    - action: UnlockBonus
+      id: crew_large_mass
+      bonus: ModuleMassReduction
+      bonusParameter: 30
+      targets:
+        - module_crew_compartment
+        - module_crew_medium
+        - module_crew_large
+
+# ── 1.5a Orphaned big power plant becomes reachable + buildable ──
+# CHEMICAL POWER REACTOR (research_power_chem). The node is an orphan in the base dump
+# (empty requirementsResearch), so nothing points into it. Give it the Power-branch root
+# as a prerequisite (requirementsResearch is full-replace) — this also makes its inherited
+# base unlock of build_power_chemical reachable. Its build_power_fuel_big unlock is ours.
+research_power_chem:
+  requirementsResearch:
+    - research_category_power
+  unlocks:
+    - action: UnlockFacility
+      id: build_power_fuel_big
+
+# ── 2. Released dead-end rewards ──
+# SOLID PROPELLANT ROCKETS (research_chem_main1)
+research_chem_main1:
+  unlocks:
+    - action: UnlockBonus
+      id: lv_build_speed
+      bonus: BuildSpeed
+      bonusParameter: 15
+      targets:
+        - LV
+
+# MICROPROCESSORS (research_computing_proc1)
+research_computing_proc1:
+  unlocks:
+    - action: UnlockBonus
+      id: micro_research
+      bonus: ResearchProduction
+      bonusParameter: 5
+
+# EARLY LAUNCH SYSTEMS (research_lv_main1)
+research_lv_main1:
+  unlocks:
+    - action: UnlockBonus
+      id: early_launch_cost
+      bonus: LaunchCost
+      bonusParameter: 10
+      targets:
+        - LV
+
+# ── 3. Un-upgradeable mechanics hosted on released leaves ──
+# EXOPLANET DETECTION (research_observation_4)
+research_observation_4:
+  unlocks:
+    - action: UnlockBonus
+      id: obs_speed
+      bonus: ObservationSpeed
+      bonusParameter: 25
+
+# EXPANDED CARGO BAYS 4 (research_sc_cargo4)
+research_sc_cargo4:
+  unlocks:
+    - action: UnlockBonus
+      id: sc_maintenance
+      bonus: MaintenanceReduce
+      bonusParameter: 20
+      targets:
+        - SC
+
+# ADVANCED PAYLOAD FAIRINGS (research_lv_upgr4)
+research_lv_upgr4:
+  unlocks:
+    - action: UnlockBonus
+      id: lv_maintenance
+      bonus: MaintenanceReduce
+      bonusParameter: 20
+      targets:
+        - LV

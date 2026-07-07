@@ -1,0 +1,108 @@
+# Research Tree Expansion — power patches + big-tier balance
+# ─────────────────────────────────────────────────────────────────────────────
+# All blocks patch EXISTING base facilities in place (id + only the changed fields).
+# No new facility is defined: the earlier module_basemining_gas variant is dropped in
+# favour of AdditionalMinedResources on research_mine_3 (see research.yaml).
+#
+# isLocked findings: the dump exposes NO per-facility isLocked field, but game code
+# Company.cs:538 gates buildability as `!IsLocked || UnlockFacility-set.Contains(ID)`,
+# so an UnlockFacility on a research node makes an isLocked:true facility buildable
+# directly — no defensive `isLocked: false` field-patch is needed for the orphaned
+# base facilities (glass_big, electrolysis, big power plants).
+
+# ── §1.5 Fueled power-plant load-following (energyThrottleable) ──
+# Patch-in-place: id + energyThrottleable only, per research-teddit-format.md §3
+# scalar-patch pattern (no full redefinition). Applies to every power facility whose
+# energyProductionData.input is non-empty (burns fuel); solar/wind/geothermal/battery/
+# receiver/transfer facilities have no energyInput and are NOT throttleable.
+# No YAML-settable dispatch-priority field exists (GetPriority is per-instance runtime
+# state, ObjectInfoData.cs:986, adjusted only via the in-game +/- UI, FacilityInfoWindow.cs:172,392
+# — not a facilities.yaml field), so no priority is set here.
+# build_power_chemical rebalance (task 021, plan-combustion-family.md Revision 2): fixes the
+# original missing-energyInput bug (free power) and re-tunes it as the non-renewable early-game
+# baseline, comparable to solar/wind in output/cost/footprint. Burns id_resource_fuel only (no
+# oxidizer); emits CO2 + water from combustion. Clear the dead geothermal flag; throttleable.
+build_power_chemical:
+  geothermal: false
+  energyThrottleable: true
+  energyProduction: 15
+  needWorkersToWork: 4
+  timeToBuildInDays: 60
+  maintenanceCostPerDay: 5
+  buildResources:
+    id_resource_steel: 90
+    id_resource_alloy: 15
+  energyInput:
+    id_resource_fuel: 0.5
+  byproducts:
+    - resource: id_resource_co2
+      rate: 0.35
+      state: Gas
+    - resource: id_resource_water
+      rate: 0.15
+      state: Solid
+
+build_power_carbon:
+  energyThrottleable: true
+
+build_power_fusion:
+  energyThrottleable: true
+
+build_power_hydrogen:
+  energyThrottleable: true
+
+build_power_nuke:
+  energyThrottleable: true
+
+# ── §Big-tier balance (task 021, plan-bigtier-balance.md final numbers) ──
+# Patch-in-place: id + only the changed fields. nuke_big and noblegasmine_big are DROPPED
+# (no entries here). Field syntax matches the base tiers in the dump.
+
+# POWER PLANT — chemical's industrial ×10 sibling (plan-combustion-family.md Revision 2):
+# attributes ×10, buildResources ×9, timeToBuildInDays ×5, workers/maintenance ×10 off the new
+# chemical baseline. Fuel-only input (no oxidizer), same fuel efficiency as chemical.
+build_power_fuel_big:
+  energyThrottleable: true
+  energyProduction: 150
+  needWorkersToWork: 40
+  timeToBuildInDays: 300
+  maintenanceCostPerDay: 50
+  buildResources:
+    id_resource_steel: 810
+    id_resource_alloy: 135
+  energyInput:
+    id_resource_fuel: 5.0
+  byproducts:
+    - resource: id_resource_co2
+      rate: 3.5
+      state: Gas
+    - resource: id_resource_water
+      rate: 1.5
+      state: Solid
+
+# GLASS KILN — normalize the 1000× placeholder down to the 10×/9×/5× rule (plan §B.1).
+build_glass_big:
+  timeToBuildInDays: 750
+  maintenanceCostPerDay: 100
+  buildResources:
+    id_resource_steel: 2700
+  refinerInput:
+    id_resource_silicon: 1
+  refinerOutput:
+    id_resource_glass: 1
+
+# ELECTROLYSIS PLANT — same normalize-to-10× treatment (plan §B.2).
+build_electrolysis_big:
+  timeToBuildInDays: 750
+  maintenanceCostPerDay: 100
+  buildResources:
+    id_resource_metal: 450
+  refinerInput:
+    id_resource_water: 0.9
+  refinerOutput:
+    id_resource_hydrogen: 0.6
+    id_resource_oxygen: 0.3
+
+# CREW COMPARTMENT TYPE-L (SpaceModuleDescriptor)
+module_crew_large:
+  mass: 50

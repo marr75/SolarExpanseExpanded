@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyName>SolarExpanseExpanded</AssemblyName>
+    <Product>SolarExpanseExpanded</Product>
+    <Version>0.1.0</Version>
+    <BepInExPluginGuid>mattbarr.solarexpanse.expanded</BepInExPluginGuid>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BepInEx.Core" Version="5.4.21"/>
+    <PackageReference Include="BepInEx.PluginInfoProps" Version="2.1.0"/>
+    <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.2" PrivateAssets="all"/>
+    <PackageReference Include="PolySharp" Version="1.16.0" PrivateAssets="all"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(ManagedDir)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+      <Publicize>true</Publicize>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(ManagedDir)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(ManagedDir)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- Game ScriptableObject/MonoBehaviour types derive from Sirenix base types;
+         needed for base-type resolution. -->
+    <Reference Include="Sirenix.Serialization">
+      <HintPath>$(ManagedDir)\Sirenix.Serialization.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Teddit YAML data-mod content: not compiled, deployed via DeployTedditMod below. -->
+    <None Include="TedditMod\ResearchTreeExpansion\*.yaml"/>
+  </ItemGroup>
+
+  <!-- TEMP: DLL has no patches yet; re-enable when a Harmony patch is added.
+  <Target Name="DeployToPlugins" AfterTargets="Build">
+    <MakeDir Directories="$(GameDir)\BepInEx\plugins\SolarExpanseExpanded\"/>
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(GameDir)\BepInEx\plugins\SolarExpanseExpanded\"/>
+    <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(GameDir)\BepInEx\plugins\SolarExpanseExpanded\" Condition="Exists('$(TargetDir)$(TargetName).pdb')"/>
+  </Target>
+  -->
+
+  <Target Name="DeployTedditMod" AfterTargets="Build">
+    <MakeDir Directories="$(GameDir)\BepInEx\plugins\Teddit\mods\ResearchTreeExpansion\"/>
+    <Copy SourceFiles="TedditMod\ResearchTreeExpansion\facilities.yaml;TedditMod\ResearchTreeExpansion\research.yaml" DestinationFolder="$(GameDir)\BepInEx\plugins\Teddit\mods\ResearchTreeExpansion\"/>
+  </Target>
+
+</Project>
