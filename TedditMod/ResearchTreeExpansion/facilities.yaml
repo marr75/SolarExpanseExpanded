@@ -106,3 +106,12 @@ build_electrolysis_big:
 # CREW COMPARTMENT TYPE-L (SpaceModuleDescriptor)
 module_crew_large:
   mass: 50
+
+# --- Asteroid Engine Balance ---
+# BUILD_ASTEROID_ENGINE_FACILITY (GroundFacilityDescriptor)
+build_asteroid_engine_module:
+  buildResources:
+    id_resource_steel: 5000
+    id_resource_plastic: 1000
+    id_resource_uran: 1100
+    id_resource_alloy: 1500
