@@ -5,7 +5,7 @@
     <AssemblyName>SolarExpanseExpanded</AssemblyName>
     <Product>SolarExpanseExpanded</Product>
     <Version>0.1.0</Version>
-    <BepInExPluginGuid>mattbarr.solarexpanse.expanded</BepInExPluginGuid>
+    <BepInExPluginGuid>marr75.solarexpanse.expanded</BepInExPluginGuid>
   </PropertyGroup>
 
   <ItemGroup>
