@@ -41,4 +41,4 @@ Vanilla: the chemical power plant silently produces power for free (missing fuel
 `TedditMod/ResearchTreeExpansion/*.yaml` straight into
 `$(GameDir)/BepInEx/plugins/Teddit/mods/ResearchTreeExpansion/`. The project also builds a BepInEx plugin DLL shell (
 `SolarExpanseExpanded.dll`), but it currently has no Harmony patches and isn't deployed to
-`BepInEx/plugins/` — all real content ships as YAML. See `AGENTS.md`.
+`BepInEx/plugins/` — all real content ships as YAML.
