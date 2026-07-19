@@ -111,7 +111,11 @@ module_crew_large:
 # BUILD_ASTEROID_ENGINE_FACILITY (GroundFacilityDescriptor)
 build_asteroid_engine_module:
   buildResources:
-    id_resource_steel: 5000
+    id_resource_steel: 3500
     id_resource_plastic: 1000
     id_resource_uran: 1100
     id_resource_alloy: 1500
+
+# --- Atmo Extractor Balance ---
+build_space_atmoscoop:
+  specialAbilityParameter: 0.1
