@@ -1,0 +1,33 @@
+[config]
+schemaVersion = "0.0.1"
+
+[package]
+namespace = "marr75"
+name = "SolarExpanseExpanded"
+versionNumber = "0.0.0"
+description = "Rebalances the fuel-power branch and gives a dozen dead-end research nodes a reason to exist: new facility tiers, real payoffs for finished tech, and a fixed early-game power plant."
+websiteUrl = "https://github.com/marr75/SolarExpanseExpanded"
+containsNsfwContent = false
+
+[package.dependencies]
+BepInEx-BepInExPack = "5.4.2100" # TODO(verify): confirm exact Thunderstore dependency string + version
+
+[build]
+icon = "./icon.png"
+readme = "./README.md"
+outdir = "./artifacts/thunderstore"
+
+# TODO: this mod's plugin DLL deploy is temp-disabled and it currently ships YAML data
+# (Teddit ResearchTreeExpansion), not a plugin DLL. The build.copy below assumes the
+# standard single-DLL staging layout; decide the real artifact pattern (YAML payload vs.
+# DLL) before releasing and update source/target to match.
+[[build.copy]]
+source = "./staging/BepInEx/plugins/SolarExpanseExpanded/"
+target = "./BepInEx/plugins/SolarExpanseExpanded/"
+
+[publish]
+repository = "https://thunderstore.io"
+communities = ["solar-expanse"] # TODO(pending ecosystem-schema PR): confirm community slug
+
+[publish.categories]
+solar-expanse = ["mods"]
