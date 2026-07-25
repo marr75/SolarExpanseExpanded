@@ -51,8 +51,12 @@
   -->
 
   <Target Name="DeployTedditMod" AfterTargets="Build">
-    <MakeDir Directories="$(GameDir)\BepInEx\plugins\Teddit\mods\ResearchTreeExpansion\"/>
-    <Copy SourceFiles="TedditMod\ResearchTreeExpansion\facilities.yaml;TedditMod\ResearchTreeExpansion\research.yaml" DestinationFolder="$(GameDir)\BepInEx\plugins\Teddit\mods\ResearchTreeExpansion\"/>
+    <ItemGroup>
+      <ResearchTreeExpansionFiles Include="TedditMod\ResearchTreeExpansion\*.yaml" />
+    </ItemGroup>
+    <MakeDir Directories="$(GameDir)\BepInEx\plugins\Teddit\mods\ResearchTreeExpansion" />
+    <Copy SourceFiles="@(ResearchTreeExpansionFiles)"
+        DestinationFolder="$(GameDir)\BepInEx\plugins\Teddit\mods\ResearchTreeExpansion" />
   </Target>
 
 </Project>
