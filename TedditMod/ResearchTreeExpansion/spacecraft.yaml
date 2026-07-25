@@ -1,0 +1,9 @@
+enabled: true
+
+# PROMETHEUS (SpacecraftType)
+spacecraft_nuke_small:
+  exhaustV: 4
+
+# ASTEROID ENGINE (SpacecraftType)
+Spacecraft_build_asteroid_engine_facilityModule:
+  asteroidPullingParameter1: 20000
