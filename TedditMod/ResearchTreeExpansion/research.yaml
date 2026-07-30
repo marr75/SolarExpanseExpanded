@@ -137,14 +137,14 @@ research_observation_4:
       bonusParameter: 25
 
 # EXPANDED CARGO BAYS 4 (research_sc_cargo4)
-research_sc_cargo4:
-  unlocks:
-    - action: UnlockBonus
-      id: sc_maintenance
-      bonus: MaintenanceReduce
-      bonusParameter: 20
-      targets:
-        - SC
+#research_sc_cargo4:
+#  unlocks:
+#    - action: UnlockBonus
+#      id: sc_maintenance
+#      bonus: MaintenanceReduce
+#      bonusParameter: 20
+#      targets:
+#        - SC
 
 # ADVANCED PAYLOAD FAIRINGS (research_lv_upgr4)
 research_lv_upgr4:
@@ -166,3 +166,58 @@ research_launch_massengine:
       id: build_asteroid_engine_module
     - action: UnlockContract
       id: contract_asteroid_pulling
+      
+# --- Cargo Upgrade Rebalance ---
+# EXPANDED CARGO BAYS 1 (ResearchDefinition)
+research_sc_cargo1:
+  replaceUnlocks: true
+  unlocks:
+    - action: UnlockBonus
+      bonus: SCCargoCapacityBase
+      bonusParameter: 50
+      targets:
+        - spacecraft_chem_small
+        - spacecraft_chem_mid2
+        - spacecraft_chem_large
+
+# EXPANDED CARGO BAYS 2 (ResearchDefinition)
+research_sc_cargo2:
+  replaceUnlocks: true
+  unlocks:
+    - action: UnlockBonus
+      bonus: SCCargoCapacityBase
+      bonusParameter: 50
+      targets:
+        - spacecraft_electric_small
+        - spacecraft_electric_mid
+        - spacecraft_nuke_small
+
+# EXPANDED CARGO BAYS 3 (ResearchDefinition)
+research_sc_cargo3:
+  replaceUnlocks: true
+  unlocks:
+    - action: UnlockBonus
+      bonus: SCCargoCapacityBase
+      bonusParameter: 50
+      targets:
+        - spacecraft_nuke_mid
+        - spacecraft_nuke_large
+        - spacecraft_nuke_nolv
+
+# EXPANDED CARGO BAYS 4 (ResearchDefinition)
+research_sc_cargo4:
+  replaceUnlocks: true
+  unlocks:
+    - action: UnlockBonus
+      bonus: SCCargoCapacityBase
+      bonusParameter: 50
+      targets:
+        - spacecraft_fusion_small
+        - spacecraft_fusion_mid
+        - spacecraft_fusion_large
+    - action: UnlockBonus
+      id: sc_maintenance
+      bonus: MaintenanceReduce
+      bonusParameter: 20
+      targets:
+        - SC
